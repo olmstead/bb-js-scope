@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>reveal.js – The HTML Presentation Framework</title>
+
+    <meta name="description"
+          content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+        <section>
+            <h1>Javascript Page Load Events</h1>
+            <h3>what happens when</h3>
+            <p>
+                <small>Brown bag by <a href="mailto:john.olmstead@trizic.com">John
+                    Olmstead</a> <a href="http://trizic.com">@trizic
+                    .com</a></small>
+            </p>
+        </section>
+        <section>
+        <blockquote>“The early bird gets the worm, but the second mouse gets the cheese.”</blockquote>
+
+        ― Willie Nelson
+        </section>
+        <section>
+            <h2><span style="text-transform: none">load</span>  event</h2>
+            <p>The load event is fired when a resource and its dependent resources have finished loading.</p>
+            <pre><code class="hljs" data-trim contenteditable>
+function doLoad() {
+    alert( "The load event is executing" );
+}
+
+if ( window.addEventListener ) {
+    window.addEventListener( "load", doLoad, false );
+} else if ( window.attachEvent ) {
+    window.attachEvent( "onload", doLoad );
+} else if ( window.onLoad ) {
+    window.onload = doLoad;
+}
+            </code></pre>
+            <a href='http://docs.webplatform.org/wiki/dom/Element/load'>webplatform.org/wiki/dom/Element/load</a>
+        </section>
+
+        <section>
+            <h2><span style="text-transform: none">DOMContentLoaded</span> event</h2>
+            <p>Fired when the initial HTML document has been completely loaded and parsed, without waiting for other resources.</p>
+            <img style="height: 250px" src="domloaded.png"/>
+            <p>In most cases, the script can be run as soon as the DOM hierarchy has been fully constructed</p>
+            <a href="http://docs.webplatform.org/wiki/dom/Event/DOMContentLoaded">webplatform.org/wiki/dom/Event/DOMContentLoaded</a>
+        </section>
+
+
+        <section>
+            <h2><span style="text-transform: none">jQuery ready</span> method</h2>
+            <p>Execute a function when the DOM is fully loaded..</p>
+            <pre><code class="hljs" data-trim contenteditable>
+$( document ).ready( handler )
+$().ready( handler ) (this is not recommended)
+$( handler )
+            </code></pre>
+            <a href="http://api.jquery.com/ready/">jquery.com/ready/</a>
+        </section>
+        <section>
+            <p>Is DOMContentLoaded event EXACTLY the same as jQuery's .ready() function?</p>
+            <ul>
+                <li class="fragment">The real event can support any document.</li>
+                <li class="fragment">jQuery will fire the event asynchronously even if the event has already happened.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Deferred <span style="text-transform: none">vs</span> Async</h2>
+            <ul>
+                <li><span style="color: orange">async:</span> script is completely independent, parallelizes load</li>
+<pre><code class="hljs" data-trim contenteditable>
+    <script src="indepenendent.js" async></script>
+</code></pre>
+                <li><span style="color: orange">defer:</span> script relies or is relied upon by another script (better to use jQuery ready or equiv)</li>
+                <pre><code class="hljs" data-trim contenteditable>
+<script src="demo_async.js" defer></script>
+                </code></pre>
+                <li><span style="color: orange">inline:</span> small, safe and is something relied upon by an async script: Google analytics, UI binding</li>
+                <pre><code class="hljs" data-trim contenteditable>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+                </code></pre>
+            </ul>
+        </section>
+        <section>
+            <h2>Inline Javascript?</h2>
+            <p>Put at bottom of page: analytics, page pings.</p>
+            <p>Use a queue/buffer while rendering on the server or inline.</p>
+        </section>
+        <section>
+            <h2>Chrome Tools</h2>
+            <p>
+                <h4>network tab</h4>
+                <a href="http://developer.chrome.com/devtools/docs/network">chrome.com/devtools/docs/network</a>
+            </p>
+            <p>
+                <h4>timeline panel</h4>
+                <a href="http://developer.chrome.com/devtools/docs/timeline">chrome.com/devtools/docs/timeline</a>
+            </p>
+        </section>
+
+        <section>
+            <h1>that's all folks</h1>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+    // Full list of configuration options available at:
+    // http://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js',
+                async: true,
+                callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+
+</body>
+</html>
